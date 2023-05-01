@@ -6,6 +6,7 @@ import '../../../core/db/sqlite_service.dart';
 
 abstract class ContactsService {
   Future<Result<List<Contact>, Error>> getAllContact();
+  Future<Result<List<Contact>, Error>> searchContact(String searchTerm);
   Future<Result<int, Error>> addNewContact(Contact contact);
   Future<void> deleteContact(int id);
 }
@@ -23,6 +24,16 @@ class BlContactService implements ContactsService {
   Future<Result<List<Contact>, Error>> getAllContact() async {
     try {
       final contactsList = await _dbService.getAllContacts();
+      return Success(contactsList);
+    } on Error catch (e) {
+      return Error(e);
+    }
+  }
+
+  @override
+  Future<Result<List<Contact>, Error>> searchContact(String searchTerm) async {
+    try {
+      final contactsList = await _dbService.searchContacts(searchTerm);
       return Success(contactsList);
     } on Error catch (e) {
       return Error(e);

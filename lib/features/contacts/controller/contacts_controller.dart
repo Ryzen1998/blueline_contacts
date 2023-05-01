@@ -54,6 +54,19 @@ class ContactsController extends StateNotifier<ContactState> {
     });
   }
 
+  Future<void> searchContacts(String searchTerm) async {
+    state = state.copyWith(contacts: const AsyncValue.loading());
+    final result = await _contactsService.searchContact(searchTerm);
+    result.when((contacts) {
+      state = state.copyWith(
+          contacts: AsyncValue.data(contacts),
+          expansionList: ExpansionItemMaster(contactList: contacts));
+    }, (error) {
+      state =
+          state.copyWith(contacts: AsyncValue.error(error, StackTrace.current));
+    });
+  }
+
   Future<void> addContact(Contact contact) async {
     final result = await _contactsService.addNewContact(contact);
     result.when((success) => loadContacts(), (error) => null);

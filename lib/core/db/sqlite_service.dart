@@ -88,6 +88,43 @@ class SqliteService {
     return contacts;
   }
 
+  Future<List<Contact>> searchContacts(String searchTerm) async {
+    if (searchTerm == '') {
+      return getAllContacts();
+    } else {
+      final Database db = await initDb();
+
+      final List<Map<String, Object?>> contactQueryResult = await db.rawQuery(
+          "SELECT * FROM BLCONTACTS WHERE (FIRSTNAME LIKE '%$searchTerm%' or LASTNAME LIKE '%$searchTerm%')");
+
+      List<Contact> contacts =
+          contactQueryResult.map((e) => Contact.fromMap(e)).toList();
+
+      final List<Map<String, Object?>> contactDetailQueryResult =
+          await db.query("BLCONTACTSDETAIL");
+
+      List<ContactDetail> detailList = contactDetailQueryResult
+          .map((e) => ContactDetail.fromMap(e))
+          .toList();
+
+      db.close();
+
+      for (Contact item in contacts) {
+        item.contactDetail
+            ?.addAll(detailList.where((x) => x.id == item.id).toList());
+      }
+      if (contacts.isEmpty) {
+        contacts = await getAllContacts();
+        contacts.retainWhere(
+              (x) => x.contactDetail!.any(
+                (element) => element.number.contains(searchTerm),
+          ),
+        );
+      }
+      return contacts;
+    }
+  }
+
   Future<void> deleteContact(int id) async {
     final Database db = await initDb();
     await db.delete('BLCONTACTS', where: "ID=?", whereArgs: [id]);

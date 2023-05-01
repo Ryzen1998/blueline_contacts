@@ -44,13 +44,18 @@ class Index extends ConsumerWidget {
         clipBehavior: Clip.antiAliasWithSaveLayer,
         children: [
           Padding(
-            padding: const EdgeInsets.only(top: 20, bottom: 10),
+            padding: const EdgeInsets.only(top: 70, bottom: 10),
             child: SizedBox(
               height: 50,
               width: MediaQuery.of(context).size.width - 30,
               child: TextFormField(
                 onTapOutside: (event) {
                   FocusScope.of(context).requestFocus(FocusNode());
+                },
+                onChanged: (value) {
+                  ref
+                      .read(contactsControllerProvider.notifier)
+                      .searchContacts(value);
                 },
                 decoration: InputDecoration(
                   prefixIcon: const Icon(Icons.search),
