@@ -26,94 +26,109 @@ class ContactListView extends ConsumerStatefulWidget {
 class _ContactListViewState extends ConsumerState<ContactListView> {
   @override
   Widget build(BuildContext context) {
-    return ListView(
-      key: const PageStorageKey('blueLineContactListView'),
-      physics: const BouncingScrollPhysics(),
-      primary: false,
-      shrinkWrap: true,
-      addAutomaticKeepAlives: true,
-      addRepaintBoundaries: false,
-      children: [
-        ExpansionPanelList(
-          expansionCallback: (int index, bool isExpanded) {
-            setState(() {
-              ref
-                  .watch(contactsControllerProvider)
-                  .expansionList
-                  .expansionItem[index]
-                  .isExpanded = !isExpanded;
-            });
-          },
-          children: ref
-              .watch(contactsControllerProvider)
-              .expansionList
-              .expansionItem
-              .map(
-                (e) => ExpansionPanel(
-                  canTapOnHeader: true,
-                  headerBuilder: (BuildContext context, bool isExpanded) {
-                    return GestureDetector(
-                      onLongPress: () {
-                        if (!isExpanded) {
-                          BlueLineUiElement.blShowModalBottomSheet(
-                              context, e.data, ref);
-                        }
-                      },
-                      key: PageStorageKey(
-                          'blueLineContactListViewExpansionPanel${UniqueKey()}'),
-                      child: ListTile(
-                        key: PageStorageKey(
-                            'blueLineContactListViewListTile1${UniqueKey()}'),
-                        contentPadding: const EdgeInsets.only(left: 30),
-                        title: Text('${e.data.firstName} ${e.data.lastName}'),
-                        leading: CircleAvatar(
-                          child: Text(e.data.firstName.substring(0, 1)),
-                        ),
-                      ),
-                    );
+    return ref.watch(contactsControllerProvider).contacts.when(
+          data: (contacts) {
+            return ListView(
+              key: const PageStorageKey('blueLineContactListView'),
+              physics: const BouncingScrollPhysics(),
+              primary: false,
+              shrinkWrap: true,
+              addAutomaticKeepAlives: true,
+              addRepaintBoundaries: false,
+              children: [
+                ExpansionPanelList(
+                  expansionCallback: (int index, bool isExpanded) {
+                    setState(() {
+                      ref
+                          .watch(contactsControllerProvider)
+                          .expansionList
+                          .expansionItem[index]
+                          .isExpanded = !isExpanded;
+                    });
                   },
-                  body: SizedBox(
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 14),
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          for (ContactDetail detail in e.data.contactDetail!)
-                            ListTileGenerator(
-                              detail: detail,
-                            ),
-                          if (e.data.email != "")
-                            ListTile(
-                              key: PageStorageKey(
-                                  'blueLineContactListViewListTile2${UniqueKey()}'),
-                              leading: const Icon(
-                                Icons.alternate_email,
-                                color: Colors.blueAccent,
-                              ),
-                              title: Text(e.data.email),
+                  children: ref
+                      .watch(contactsControllerProvider)
+                      .expansionList
+                      .expansionItem
+                      .map(
+                        (e) => ExpansionPanel(
+                          canTapOnHeader: true,
+                          headerBuilder:
+                              (BuildContext context, bool isExpanded) {
+                            return GestureDetector(
                               onLongPress: () {
-                                Clipboard.setData(
-                                    ClipboardData(text: e.data.email));
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Copied to clipboard'),
-                                  ),
-                                );
+                                if (!isExpanded) {
+                                  BlueLineUiElement.blShowModalBottomSheet(
+                                      context, e.data, ref);
+                                }
                               },
-                              onTap: () {
-                                widget._sendEmail(e.data.email);
-                              },
-                            )
-                        ],
-                      ),
-                    ),
-                  ),
-                  isExpanded: e.isExpanded,
+                              key: PageStorageKey(
+                                  'blueLineContactListViewExpansionPanel${UniqueKey()}'),
+                              child: ListTile(
+                                key: PageStorageKey(
+                                    'blueLineContactListViewListTile1${UniqueKey()}'),
+                                contentPadding: const EdgeInsets.only(left: 30),
+                                title: Text(
+                                    '${e.data.firstName} ${e.data.lastName}'),
+                                leading: CircleAvatar(
+                                  child: Text(e.data.firstName.substring(0, 1)),
+                                ),
+                              ),
+                            );
+                          },
+                          body: SizedBox(
+                            child: Padding(
+                              padding: const EdgeInsets.only(left: 14),
+                              child: Column(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  for (ContactDetail detail
+                                      in e.data.contactDetail!)
+                                    ListTileGenerator(
+                                      detail: detail,
+                                    ),
+                                  if (e.data.email != "")
+                                    ListTile(
+                                      key: PageStorageKey(
+                                          'blueLineContactListViewListTile2${UniqueKey()}'),
+                                      leading: const Icon(
+                                        Icons.alternate_email,
+                                        color: Colors.blueAccent,
+                                      ),
+                                      title: Text(e.data.email),
+                                      onLongPress: () {
+                                        Clipboard.setData(
+                                            ClipboardData(text: e.data.email));
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content:
+                                                Text('Copied to clipboard'),
+                                          ),
+                                        );
+                                      },
+                                      onTap: () {
+                                        widget._sendEmail(e.data.email);
+                                      },
+                                    )
+                                ],
+                              ),
+                            ),
+                          ),
+                          isExpanded: e.isExpanded,
+                        ),
+                      )
+                      .toList(),
                 ),
-              )
-              .toList(),
-        ),
-      ],
-    );
+              ],
+            );
+          },
+          error: (error, trace) {
+            return const Text('something went wrong');
+          },
+          loading: () => const Center(
+            child: CircularProgressIndicator(),
+          ),
+        );
   }
 }

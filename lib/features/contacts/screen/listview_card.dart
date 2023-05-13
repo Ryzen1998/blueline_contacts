@@ -92,7 +92,7 @@ class _ListTileGeneratorState extends State<ListTileGenerator> {
                       padding: const EdgeInsets.all(8.0),
                       child: SizedBox(
                         child: Text(
-                          widget.detail.number,
+                          '${widget.detail.number} - ${widget.detail.nick}',
                           style: const TextStyle(
                               fontWeight: FontWeight.w400, fontSize: 15),
                         ),

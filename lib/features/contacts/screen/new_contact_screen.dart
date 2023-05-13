@@ -1,4 +1,3 @@
-import 'package:blueline_contacts/core/widgets/bluelineappbar/custom_appbar.dart';
 import 'package:blueline_contacts/features/contacts/controller/contacts_controller.dart';
 import 'package:blueline_contacts/model/contact.dart';
 import 'package:flutter/material.dart';
@@ -34,7 +33,10 @@ class _NewContactScreenState extends ConsumerState<NewContactScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const CustomAppBar(),
+      appBar: AppBar(
+        title: const Text('Contact Manager'),
+        centerTitle: true,
+      ),
       body: SafeArea(
         top: true,
         bottom: true,
