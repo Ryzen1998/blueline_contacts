@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import '../../../core/widgets/bottomSheet/text_bottom_sheet.dart';
 import '../../../model/contact_detail.dart';
 
 class ListTileGenerator extends StatefulWidget {
@@ -16,14 +17,6 @@ class ListTileGenerator extends StatefulWidget {
       path: phoneNumber,
     );
     await launchUrl(launchUri);
-  }
-
-  Future<void> _sendSms(String phoneNumber) async {
-    final Uri smsLaunchUri = Uri(
-      scheme: 'sms',
-      path: phoneNumber,
-    );
-    await launchUrl(smsLaunchUri);
   }
 
   @override
@@ -122,9 +115,8 @@ class _ListTileGeneratorState extends State<ListTileGenerator> {
                       color: _setIconColor(),
                     ),
                     onPressed: () {
-                      if (_hasCallSupport) {
-                        widget._sendSms(widget.detail.number);
-                      }
+                      BlueLineTextBottomSheet.blShowTextBottomSheet(
+                          context, widget.detail.number);
                     },
                   )
                 ],

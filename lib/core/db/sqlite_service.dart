@@ -24,6 +24,10 @@ class SqliteService {
             " ON DELETE CASCADE "
             "ON UPDATE NO ACTION)",
           );
+          await database.execute(
+            "CREATE TABLE IF NOT EXISTS BLAPPCONFIG"
+            "(ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME TEXT,VALUE TEXT)",
+          );
         },
         version: 1,
       );
@@ -116,8 +120,8 @@ class SqliteService {
       if (contacts.isEmpty) {
         contacts = await getAllContacts();
         contacts.retainWhere(
-              (x) => x.contactDetail!.any(
-                (element) => element.number.contains(searchTerm),
+          (x) => x.contactDetail!.any(
+            (element) => element.number.contains(searchTerm),
           ),
         );
       }
@@ -130,5 +134,11 @@ class SqliteService {
     await db.delete('BLCONTACTS', where: "ID=?", whereArgs: [id]);
     await db.delete('BLCONTACTSDETAIL', where: "ID=?", whereArgs: [id]);
     db.close();
+  }
+
+  Future<bool> setPasscodeLockStatus(bool isEnabled) async {
+    final Database db = await initDb();
+    await db.rawInsert('INSERT INTO BLAPPCONFIG(NAME,VALUE) VALUES()');
+    return false;
   }
 }
