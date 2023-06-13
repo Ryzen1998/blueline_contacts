@@ -27,7 +27,7 @@ class _MyAppState extends ConsumerState<MyApp> {
       title: 'Contacts',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+        primarySwatch: Colors.blue,
       ),
       home:
           ref.watch(settingsControllerProvider).isValidLogin.when(data: (data) {
