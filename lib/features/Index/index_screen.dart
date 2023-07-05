@@ -1,4 +1,4 @@
-import 'package:blueline_contacts/features/settings/screen/settings.dart';
+import 'package:blueline_contacts/core/widgets/sidebar/sidebar_content.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -19,34 +19,13 @@ class _IndexState extends ConsumerState<Index> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(),
-      drawer: SafeArea(
+      drawer: const SafeArea(
         child: Drawer(
           width: 200,
           child: Padding(
-              padding: const EdgeInsets.all(10),
+              padding: EdgeInsets.all(10),
               child: Column(
-                children: [
-                  ListTile(
-                    leading: const Icon(Icons.settings),
-                    title: const Text(
-                      'Settings',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black45,
-                      ),
-                    ),
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const SettingsScreen(),
-                        ),
-                      );
-                    },
-                  ),
-                ],
+                children: [SideBarContent()],
               )),
         ),
       ),
@@ -73,6 +52,26 @@ class _IndexState extends ConsumerState<Index> {
           );
         },
         child: const Icon(Icons.add),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: BottomAppBar(
+        color: Colors.blue,
+        shape: const CircularNotchedRectangle(),
+        height: 50,
+        child: IconTheme(
+          data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
+          child: Row(
+            children: <Widget>[
+              const Spacer(),
+              IconButton(
+                tooltip: 'Favorite',
+                icon: const Icon(Icons.favorite),
+                onPressed: () {},
+              ),
+              const DrawerButton()
+            ],
+          ),
+        ),
       ),
     );
   }

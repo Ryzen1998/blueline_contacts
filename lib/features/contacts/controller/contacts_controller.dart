@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:blueline_contacts/features/contacts/contact_state.dart';
 import 'package:blueline_contacts/features/contacts/service/contacts_service.dart';
 import 'package:blueline_contacts/model/contact.dart';
@@ -67,8 +69,8 @@ class ContactsController extends StateNotifier<ContactState> {
     });
   }
 
-  Future<void> addContact(Contact contact) async {
-    final result = await _contactsService.addNewContact(contact);
+  Future<void> addContact(Contact contact, File image) async {
+    final result = await _contactsService.addNewContact(contact, image);
     result.when((success) => loadContacts(), (error) => null);
   }
 

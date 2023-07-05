@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../core/widgets/bottomSheet/bottom_sheet.dart';
+import 'contact_circle_avatar.dart';
 import 'listview_card.dart';
 
 class ContactListView extends ConsumerStatefulWidget {
@@ -57,10 +58,8 @@ class _ContactListViewState extends ConsumerState<ContactListView> {
                               (BuildContext context, bool isExpanded) {
                             return GestureDetector(
                               onLongPress: () {
-                                if (!isExpanded) {
-                                  BlueLineUiElement.blShowModalBottomSheet(
-                                      context, e.data, ref);
-                                }
+                                BlueLineUiElement.blShowModalBottomSheet(
+                                    context, e.data, ref);
                               },
                               key: PageStorageKey(
                                   'blueLineContactListViewExpansionPanel${UniqueKey()}'),
@@ -70,8 +69,8 @@ class _ContactListViewState extends ConsumerState<ContactListView> {
                                 contentPadding: const EdgeInsets.only(left: 30),
                                 title: Text(
                                     '${e.data.firstName} ${e.data.lastName}'),
-                                leading: CircleAvatar(
-                                  child: Text(e.data.firstName.substring(0, 1)),
+                                leading: ContactCircleAvatar(
+                                  contact: e.data,
                                 ),
                               ),
                             );

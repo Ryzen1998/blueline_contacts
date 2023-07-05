@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:blueline_contacts/core/widgets/profileImagePicker/profileImagePicker.dart';
 import 'package:blueline_contacts/features/contacts/controller/contacts_controller.dart';
 import 'package:blueline_contacts/model/contact.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +22,14 @@ class NewContactScreen extends ConsumerStatefulWidget {
 
 class _NewContactScreenState extends ConsumerState<NewContactScreen> {
   final _formKey = GlobalKey<FormState>();
+  File? profileImage;
+  _callback(File image) {
+    if (image.path != '') {
+      setState(() {
+        profileImage = image;
+      });
+    }
+  }
 
   @override
   void initState() {
@@ -48,6 +59,10 @@ class _NewContactScreenState extends ConsumerState<NewContactScreen> {
               children: [
                 Column(
                   children: [
+                    ProfileImagePicker(
+                      contactImagePath: widget.contact.imagePath ?? '',
+                      callback: _callback,
+                    ),
                     TextFormField(
                       inputFormatters: [
                         FilteringTextInputFormatter.allow(RegExp('[a-zA-Z]'))
@@ -190,9 +205,13 @@ class _NewContactScreenState extends ConsumerState<NewContactScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (_formKey.currentState!.validate()) {
-            ref
-                .read(contactsControllerProvider.notifier)
-                .addContact(widget.contact);
+            setState(() {
+              widget.contact.imagePath =
+                  profileImage?.path ?? widget.contact.imagePath ?? '';
+              ref
+                  .read(contactsControllerProvider.notifier)
+                  .addContact(widget.contact, profileImage ?? File(''));
+            });
             Navigator.of(context).pop();
           }
         },

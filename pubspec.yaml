@@ -45,6 +45,8 @@ dependencies:
   flutter_screen_lock: ^9.0.1
   local_auth: ^2.1.6
   shared_preferences: ^2.1.1
+  image_picker: ^0.8.9
+  path_provider: ^2.0.15
 
 dev_dependencies:
   flutter_test:

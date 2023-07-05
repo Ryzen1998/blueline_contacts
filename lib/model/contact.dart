@@ -6,10 +6,16 @@ class Contact {
   String firstName;
   String lastName;
   String email;
+  String? imagePath;
   List<ContactDetail>? contactDetail;
 
   factory Contact.init() {
-    return Contact(firstName: '', lastName: '', email: '', contactDetail: []);
+    return Contact(
+        firstName: '',
+        lastName: '',
+        email: '',
+        imagePath: '',
+        contactDetail: []);
   }
   //constructor
   Contact(
@@ -17,6 +23,7 @@ class Contact {
       required this.firstName,
       required this.lastName,
       required this.email,
+      this.imagePath,
       this.contactDetail});
 
   Contact.fromMap(
@@ -25,6 +32,7 @@ class Contact {
         firstName = result['FIRSTNAME'],
         lastName = result['LASTNAME'],
         email = result['EMAIL'],
+        imagePath = result['FULLPATH'],
         contactDetail = [];
 
   Map<String, Object> toMap() {
@@ -36,6 +44,10 @@ class Contact {
     };
   }
 
+  Map<String, Object> ImgPathtoMap() {
+    return {'imagePath': imagePath ?? ''};
+  }
+
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -44,6 +56,7 @@ class Contact {
           firstName == other.firstName &&
           lastName == other.lastName &&
           email == other.email &&
+          imagePath == other.imagePath &&
           contactDetail == other.contactDetail;
 
   @override
@@ -52,10 +65,11 @@ class Contact {
       firstName.hashCode ^
       lastName.hashCode ^
       email.hashCode ^
+      imagePath.hashCode ^
       contactDetail.hashCode;
 
   @override
   String toString() {
-    return 'Contact{id: $id, firstName: $firstName, lastName: $lastName, email: $email}';
+    return 'Contact{id: $id, firstName: $firstName, lastName: $lastName, email: $email,imagePath:$imagePath}';
   }
 }

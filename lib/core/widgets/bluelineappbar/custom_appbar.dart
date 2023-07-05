@@ -75,16 +75,20 @@ class _CustomAppBarState extends ConsumerState<CustomAppBar> {
       super.dispose();
     }
 
-    return AppBar(title: widget.searchBar, centerTitle: true, actions: [
-      IconButton(
-        onPressed: () {
-          _toggleSearch();
-        },
-        icon: widget.searchIcon,
-      ),
-      const SizedBox(
-        width: 10,
-      ),
-    ]);
+    return AppBar(
+        title: widget.searchBar,
+        centerTitle: true,
+        leading: Container(),
+        actions: [
+          IconButton(
+            onPressed: () {
+              _toggleSearch();
+            },
+            icon: widget.searchIcon,
+          ),
+          const SizedBox(
+            width: 10,
+          ),
+        ]);
   }
 }

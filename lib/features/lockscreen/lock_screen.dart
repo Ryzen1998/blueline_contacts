@@ -10,7 +10,7 @@ class LockScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     String getPasscode() {
-      late String result;
+      String result = '@@@@';
       ref
           .watch(settingsControllerProvider)
           .passcodeString
