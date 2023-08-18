@@ -195,6 +195,6 @@ class SqliteService {
     if (deleteTableRecord) {
       await db.delete('BLPFPICS', where: "CONTACTID=?", whereArgs: [id]);
     }
-    db.close();
+    // db.close();
   }
 }

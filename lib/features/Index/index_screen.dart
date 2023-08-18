@@ -60,16 +60,8 @@ class _IndexState extends ConsumerState<Index> {
         height: 50,
         child: IconTheme(
           data: IconThemeData(color: Theme.of(context).colorScheme.onPrimary),
-          child: Row(
-            children: <Widget>[
-              const Spacer(),
-              IconButton(
-                tooltip: 'Favorite',
-                icon: const Icon(Icons.favorite),
-                onPressed: () {},
-              ),
-              const DrawerButton()
-            ],
+          child: const Row(
+            children: <Widget>[Spacer(), DrawerButton()],
           ),
         ),
       ),
